@@ -1,0 +1,37 @@
+:root{--accent:#0b74da;--muted:#667;--card:#f8fafc}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',Arial,Helvetica,sans-serif;background:#f2f6fa;color:#0f1724}
+header{height:64px;background:linear-gradient(90deg,var(--accent),#0066c2);color:#fff;display:flex;align-items:center;padding:0 18px;gap:14px;box-shadow:0 2px 6px rgba(3,27,78,0.08)}
+.hambtn{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:22px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.sidebar{position:fixed;left:0;top:64px;bottom:0;width:280px;background:#fff;padding:18px;border-right:1px solid #e6eef6;overflow:auto}
+.menu-btn{display:block;width:100%;text-align:left;padding:12px;border-radius:8px;border:none;background:transparent;cursor:pointer;margin-bottom:8px;font-weight:600;color:#0f1724}
+main{margin-left:320px;padding:22px}
+.btn{padding:10px 14px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+.btn.secondary{background:#fff;color:var(--accent);border:1px solid #cfe4fb}
+.card{background:var(--card);padding:16px;border-radius:12px;margin-bottom:14px;box-shadow:0 1px 3px rgba(16,24,40,0.03)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.student-card{background:#fff;padding:14px;border-radius:10px;border:1px solid #e6eef9;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.student-card img{width:100%;height:220px;object-fit:cover;border-radius:8px}
+.student-card .meta{font-size:13px;color:var(--muted)}
+.overlay{position:fixed;inset:0;background:rgba(3,15,30,0.45);display:none;align-items:center;justify-content:center;z-index:120}
+.overlay.show{display:flex}
+.modal{background:#fff;padding:18px;border-radius:12px;width:95%;max-width:920px;max-height:92vh;overflow:auto;box-shadow:0 8px 30px rgba(2,6,23,0.12)}
+input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #d7e3ef;margin-bottom:8px;font-size:14px}
+label.small{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+.row{display:flex;gap:12px}
+.col{flex:1}
+.details-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eef4fb}
+.details-line strong{color:#0b3a66}
+.details-line .val{color:#123049}
+.big-photo{width:260px;height:260px;object-fit:cover;border-radius:10px;box-shadow:0 4px 18px rgba(12,38,86,0.08)}
+.muted{color:var(--muted)}
+/* responsive */
+@media (max-width:1000px){
+  main{margin-left:0;padding:12px}
+  .sidebar{position:relative;width:100%;top:0;border-right:none}
+  .student-card img{height:160px}
+  .big-photo{width:160px;height:160px}
+}
+
+/* small enhancements to modal buttons inside dynamic content */
+#dynamicContainer .modal .btn { min-width: 88px; }
