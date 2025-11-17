@@ -1,12 +1,31 @@
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+// ------------------------------------------------------
+// IMPORTS
+// ------------------------------------------------------
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+// ------------------------------------------------------
+// FIREBASE CONFIG
+// ------------------------------------------------------
+const firebaseConfig = {
     apiKey: "AIzaSyCKGeAifnGzUXUcYPyq66QZsFw0H2KzYCQ",
     authDomain: "student-management-183.firebaseapp.com",
     projectId: "student-management-183",
@@ -14,11 +33,99 @@
     messagingSenderId: "278398940942",
     appId: "1:278398940942:web:592dace5f70ac04112c95f",
     measurementId: "G-CDCQVZ4FFN"
-  };
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+
+// ------------------------------------------------------
+// INITIALIZE FIREBASE
+// ------------------------------------------------------
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+
+// ------------------------------------------------------
+// IMAGE UPLOAD FUNCTION
+// ------------------------------------------------------
+async function uploadImage(file) {
+    const filePath = "student_images/" + Date.now() + "_" + file.name;
+    const storageRef = ref(storage, filePath);
+
+    // upload image file
+    await uploadBytes(storageRef, file);
+
+    // get URL
+    const url = await getDownloadURL(storageRef);
+
+    console.log("Image uploaded: ", url);
+    return url;
+}
+
+
+// ------------------------------------------------------
+// ADD STUDENT WITH IMAGE
+// ------------------------------------------------------
+async function addStudent(name, age, file) {
+    let imageUrl = "";
+
+    if (file) {
+        imageUrl = await uploadImage(file);
+    }
+
+    await addDoc(collection(db, "students"), {
+        name: name,
+        age: age,
+        photo: imageUrl
+    });
+
+    console.log("Student added with image!");
+}
+
+
+// ------------------------------------------------------
+// GET ALL STUDENTS
+// ------------------------------------------------------
+async function getAllStudents() {
+    const querySnapshot = await getDocs(collection(db, "students"));
+    const students = [];
+
+    querySnapshot.forEach((doc) => {
+        students.push({ id: doc.id, ...doc.data() });
+    });
+
+    console.log(students);
+    return students;
+}
+
+
+// ------------------------------------------------------
+// DELETE STUDENT
+// ------------------------------------------------------
+async function deleteStudent(id) {
+    await deleteDoc(doc(db, "students", id));
+    console.log("Student deleted!");
+}
+
+
+// ------------------------------------------------------
+// UPDATE STUDENT DATA
+// ------------------------------------------------------
+async function updateStudent(id, newData) {
+    await updateDoc(doc(db, "students", id), newData);
+    console.log("Student updated!");
+}
+
+
+// ------------------------------------------------------
+// EXPORT FUNCTIONS (if needed for buttons)
+// ------------------------------------------------------
+window.addStudent = addStudent;
+window.getAllStudents = getAllStudents;
+window.deleteStudent = deleteStudent;
+window.updateStudent = updateStudent;
+
 
 /* Final local-only app implementing requested changes */
 (function(){
