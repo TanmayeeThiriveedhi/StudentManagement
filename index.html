@@ -147,5 +147,15 @@
 <div id="dynamicContainer"></div>
 
 <script src="script.js"></script>
+  <script>
+    function submitStudent() {
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const file = document.getElementById("photoInput").files[0];
+
+        addStudent(name, age, file);
+    }
+</script>
+
 </body>
 </html>
