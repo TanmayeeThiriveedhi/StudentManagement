@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Student Info & Management — Local (Final)</title>
+
+  <!-- stylish font (internet required). If you want fully offline, replace with system fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <button class="hambtn" id="hambBtn">☰</button>
+  <div>
+    <div style="font-weight:700;font-size:18px">Student Info & Management</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.9)">Local demo — works offline</div>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <h3 style="margin:0 0 10px 0">Menu</h3>
+  <button class="menu-btn" id="menuStudent">Student Info</button>
+  <button class="menu-btn" id="menuTeacher">Teacher Info</button>
+  <button class="menu-btn" id="menuRegister">Register Student</button>
+  <button class="menu-btn" id="menuTeacherReg">Register Teacher</button>
+  <button class="menu-btn" id="menuTeacherLogin">Teacher Login</button>
+  <button class="menu-btn" id="menuAdminLogin">Admin Login</button>
+  <hr style="border:none;border-top:1px solid #eef4fb;margin:12px 0"/>
+  <div class="muted">Session:</div>
+  <div id="sessionInfo" style="font-weight:700;margin:8px 0;color:#072146">Not logged in</div>
+  <div style="margin-top:10px;display:flex;gap:8px">
+    <button class="btn" id="signInBtn">Student Login</button>
+    <button class="btn secondary" id="signOutBtn">Sign Out</button>
+  </div>
+</aside>
+
+<main>
+  <div class="card">
+    <img src="https://govtpolygannavaram.ac.in//media/govtpolygannavaram_ac_in/1672074102.jpg" style="width:100%;max-width:860px;border-radius:10px" alt="">
+  </div>
+
+  <section id="studentView" class="card" style="display:none">
+    <h3 style="margin:0 0 12px 0">Student Info</h3>
+    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" id="y1">1st Year</button>
+      <button class="btn" id="y2">2nd Year</button>
+      <button class="btn" id="y3">3rd Year</button>
+      <button class="btn secondary" id="yAll">All Years</button>
+    </div>
+    <div id="studentsGrid" class="grid"></div>
+  </section>
+
+  <section id="teacherView" class="card" style="display:none">
+    <h3 style="margin:0 0 12px 0">Teacher Info</h3>
+    <div id="teacherCards" class="grid"></div>
+  </section>
+</main>
+
+<!-- STUDENT LOGIN modal -->
+<div class="overlay" id="signinModal"><div class="modal">
+  <h3>Student Login</h3>
+  <label class="small">Pin</label><input id="signinPin" placeholder="23183-CM-033"/>
+  <label class="small">Password</label><input id="signinPassword" type="password" placeholder="Student password"/>
+  <div style="display:flex;gap:10px;margin-top:8px">
+    <button class="btn" id="studentSigninBtn">Sign In</button>
+    <button class="btn secondary" id="closeSignin">Cancel</button>
+  </div>
+</div></div>
+
+<!-- TEACHER LOGIN modal -->
+<div class="overlay" id="teacherLoginModal"><div class="modal">
+  <h3>Teacher Login</h3>
+  <label class="small">Email</label><input id="teacherLoginEmail" placeholder="teacher@example.com"/>
+  <label class="small">Password (ask admin)</label><input id="teacherLoginPassword" type="password" placeholder="Enter teacher password"/>
+  <div style="display:flex;gap:10px;margin-top:8px">
+    <button class="btn" id="teacherLoginBtn">Sign In</button>
+    <button class="btn secondary" id="closeTeacherLogin">Cancel</button>
+  </div>
+  <div style="margin-top:10px;font-size:13px;color:#667">(Teacher password is provided by admin — not stored on site.)</div>
+</div></div>
+
+<!-- ADMIN login modal -->
+<div class="overlay" id="adminLoginModal"><div class="modal">
+  <h3>Admin Login</h3>
+  <label class="small">Password</label><input id="adminPassword" type="password" placeholder="Enter admin password"/>
+  <div style="display:flex;gap:10px;margin-top:8px">
+    <button class="btn" id="adminLoginBtn">Log In</button>
+    <button class="btn secondary" id="closeAdminLogin">Cancel</button>
+  </div>
+</div></div>
+
+<!-- REGISTER STUDENT modal -->
+<div class="overlay" id="registerModal"><div class="modal">
+  <h3>Register / Edit Student</h3>
+  <div class="row">
+    <div class="col">
+      <label class="small">Photo</label><input type="file" id="regPhoto" accept="image/*"/>
+      <label class="small">Pin (ex 23183-CM-033)</label><input id="regPin" placeholder="23183-CM-033"/>
+      <label class="small">Name</label><input id="regName" placeholder="Full name"/>
+      <label class="small">Email</label><input id="regEmail" placeholder="Email"/>
+      <label class="small">Phone</label><input id="regPhone" placeholder="Phone"/>
+      <label class="small">Gender</label><select id="regGender"><option>Male</option><option>Female</option><option>Other</option></select>
+      <label class="small">Mother's name</label><input id="regMother"/>
+      <label class="small">Father's name</label><input id="regFather"/>
+    </div>
+    <div class="col">
+      <label class="small">Native village</label><input id="regVillage"/>
+      <label class="small">Year (1/2/3)</label><select id="regYear"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+      <div id="yearMarksArea" style="margin-top:8px"></div>
+      <label class="small">Caste</label><input id="regCaste"/>
+      <label class="small">Scholarship Eligible?</label><select id="regScholarship"><option>Yes</option><option>No</option></select>
+      <label class="small">Age</label><input id="regAge" type="number" min="1"/>
+      <label class="small">Year joined 1st year (ex 2023)</label><input id="regJoinedYear" type="number"/>
+      <label class="small">10th class marks</label><input id="reg10th"/>
+      <label class="small">School name</label><input id="regSchool"/>
+      <label class="small">Targeted marks before diploma</label><input id="regTarget"/>
+      <label class="small">Create password (for student login)</label><input id="regPassword" type="password"/>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="btn" id="registerSaveBtn">Save Student</button>
+    <button class="btn secondary" id="registerCancelBtn">Cancel</button>
+  </div>
+</div></div>
+
+<!-- REGISTER TEACHER modal -->
+<div class="overlay" id="teacherRegModal"><div class="modal">
+  <h3>Register Teacher</h3>
+  <label class="small">Photo</label><input type="file" id="tPhoto" accept="image/*"/>
+  <label class="small">Name</label><input id="tName"/>
+  <label class="small">Email</label><input id="tEmail"/>
+  <label class="small">Designation</label><input id="tDesignation"/>
+  <label class="small">Teaching subjects (comma separated)</label><input id="tSubjects"/>
+  <label class="small">Years of experience</label><input id="tExperience" type="number"/>
+  <label class="small">Year joined (job)</label><input id="tJoinYear" type="number"/>
+  <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="btn" id="teacherSaveBtn">Save Teacher</button>
+    <button class="btn secondary" id="teacherCancelBtn">Cancel</button>
+  </div>
+</div></div>
+
+<!-- dynamic container for detail modals -->
+<div id="dynamicContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
